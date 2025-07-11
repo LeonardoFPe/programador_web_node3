@@ -1,4 +1,4 @@
-const path = require('path');
+const batata = require('path');
 
-const extension = path.extname('arquivo.docx');
+const extension = batata.extname('arquivo.aaa');
 console.log(extension); 
