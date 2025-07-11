@@ -19,6 +19,12 @@ var checkAuth = function (req, res, next) {
 
 app.use(checkAuth)
 
+app.get('/users/:id', (req, res) => {
+  console.log(`Carregando usuário: ${req.params.id}`)
+
+  res.sendFile(`${basePath}/users.html`)
+})
+
 app.get('/', (req, res) => {
     res.sendFile(`${basePath}/index.html`)
 })
