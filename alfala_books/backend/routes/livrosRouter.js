@@ -1,9 +1,10 @@
 import express from 'express';
-import { getLivros } from '../Controllers/livroController.js';
+import { getLivros, getLivro } from '../Controllers/livroController.js';
 const router = express.Router();
 
 
-router.get('/', getLivros)
+router.get('/', getLivros);
+router.get('/:id', getLivro);
 
 router.post('/', (req, res) => {
     res.send('Você fez uma requisição do tipo POST');
