@@ -1,14 +1,11 @@
 import express from 'express';
-import { getLivros, getLivro } from '../Controllers/livroController.js';
+import { getLivros, getLivro, postLivro } from '../Controllers/livroController.js';
 const router = express.Router();
 
 
+router.post('/', postLivro);
 router.get('/', getLivros);
 router.get('/:id', getLivro);
-
-router.post('/', (req, res) => {
-    res.send('Você fez uma requisição do tipo POST');
-});
 
 router.patch('/', (req, res) => {
     res.send('Você fez uma requisição do tipo PATCH');

@@ -1,5 +1,5 @@
 
-import { getTodosLivros, getLivroPorId } from '../Services/livroServices.js';
+import { getTodosLivros, getLivroPorId, insereLivro } from '../Services/livroServices.js';
 
 export const getLivros = (req, res) => {
     try {
@@ -19,5 +19,15 @@ export const getLivro = (req, res) =>{
     } catch (error) {
         res.status(500)
         res.send(error.message)
+    }
+}
+
+export const postLivro = async (req, res) => {
+    try {
+        const livroNovo = req.body;
+        await insereLivro(livroNovo);
+        res.status(201).json(livroNovo);
+    }catch (error) {
+        res.status(500).send(error.message);
     }
 }
