@@ -1,33 +1,78 @@
-
 import { getTodosLivros, getLivroPorId, insereLivro } from '../Services/livroServices.js';
 
 export const getLivros = (req, res) => {
     try {
         const livros = getTodosLivros();
-        res.send('Lista de livros');
+        res.send(livros); // Corrigido: envia a lista real de livros
     } catch (error) {
         res.status(500);
         res.send(error.message);
     }
 };
 
-export const getLivro = (req, res) =>{
-    try{
-        const id = req.params.id
-        const livro = getLivroPorId(id)
-        res.send(livro)
+export const getLivro = (req, res) => {
+    try {
+        const id = req.params.id;
+        if (id && Number(id)) {
+            const livro = getLivroPorId(Number(id));
+            res.send(livro);
+        } else {
+            res.status(400); // Corrigido: status adequado para erro de requisição
+            res.send("ID inválido");
+        }
     } catch (error) {
-        res.status(500)
-        res.send(error.message)
+        res.status(500);
+        res.send(error.message);
     }
-}
+};
 
 export const postLivro = async (req, res) => {
     try {
         const livroNovo = req.body;
-        await insereLivro(livroNovo);
-        res.status(201).json(livroNovo);
-    }catch (error) {
+        if (req.body.nome) {
+            insereLivro(livroNovo);
+            res.status(201).json(livroNovo);
+        } else {
+            res.status(422);
+            res.send("O campo nome é obrigatório");
+        }
+    } catch (error) {
         res.status(500).send(error.message);
     }
+};
+
+export const patchLivro = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const body = req.body;
+        if (id && Number(id) && body && body.trim()){
+            modificarLivro(body, id); 
+            res.send("Livro modificado com sucesso");
+        } else {
+            res.status(422);
+            res.send("Id inválido");
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
+export const deletaLivro = (req,res) => {
+    try{
+        const id = req.params.id
+
+        if(id && Number(id)){
+            deletaLivroPorId(id)
+            res.send("livro deletado com sucesso")
+        }else{
+            res.status(422)
+            res.send("Id invalido")
+        }
+    }catch(error){
+        res.status(500)
+        res.send(error.message)
+    }
+};
+export const deletaLivro = (req,res) => {
+
 }
