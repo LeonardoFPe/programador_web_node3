@@ -30,19 +30,39 @@ export const getLivro = (req, res) => {
 }
 
 export const postLivro = (req, res) => {
-    try {
-        const livroNovo = req.body;
-        if (req.body.nome) {
-            insereLivro(livroNovo);
-            res.status(201).json(livroNovo);
-        } else {
-            res.status(422)
-            res.send("O campo nome é obrigatório")
-        }
-    } catch (error) {
-        res.status(500).send(error.message);
+  try {
+    const livroNovo = req.body;
+
+    if (livroNovo.nome) {
+      const livros = getTodosLivros();
+      const ultimoId = livros.length > 0 ? Math.max(...livros.map(l => l.id)) : 0;
+      const novoLivroComId = { id: ultimoId + 1, ...livroNovo };
+
+      insereLivro(novoLivroComId);
+      res.status(201).json(novoLivroComId);
+    } else {
+      res.status(422).send("O campo 'nome' é obrigatório");
     }
-}
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+
+// export const postLivro = (req, res) => {
+//     try {
+//         const livroNovo = req.body;
+//         if (req.body.nome) {
+//             insereLivro(livroNovo);
+//             res.status(201).json(livroNovo);
+//         } else {
+//             res.status(422)
+//             res.send("O campo nome é obrigatório")
+//         }
+//     } catch (error) {
+//         res.status(500).send(error.message);
+//     }
+// }
 
 export const patchLivro = (req, res) => {
     try {
